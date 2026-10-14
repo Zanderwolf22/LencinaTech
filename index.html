@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LencinaTech — ThunderPro & Desarrollo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        :root {
+            --azul-neon: #00ccff;
+            --azul-brillo: #00f0ff;
+            --azul-oscuro: #0a1628;
+            --azul-medio: #162a4a;
+            --azul-tarjeta: #102040;
+            --amarillo: #ffdd00;
+            --texto: #e6f0ff;
+            --gris-suave: #9dc8eb;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--azul-oscuro) 0%, #0f1f3a 100%);
+            color: var(--texto);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 204, 255, 0.2);
+            background: rgba(10, 22, 40, 0.85);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--azul-neon);
+            text-shadow: 0 0 15px var(--azul-neon), 0 0 30px var(--azul-brillo);
+            margin-bottom: 0.3rem;
+        }
+
+        .logo span { color: var(--amarillo); text-shadow: 0 0 10px var(--amarillo); }
+        .subtitulo { color: #8ab4d8; font-size: 0.95rem; }
+
+        nav {
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        nav a {
+            color: var(--texto);
+            text-decoration: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover, nav a.activo {
+            background: rgba(0, 204, 255, 0.15);
+            color: var(--azul-neon);
+            box-shadow: 0 0 12px rgba(0, 204, 255, 0.3);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .pantalla { display: none; }
+        .pantalla.activa { display: block; animation: aparecer 0.4s ease; }
+        @keyframes aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 {
+            font-size: 1.7rem;
+            color: var(--azul-neon);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 1rem 3rem;
+        }
+
+        .hero h1 {
+            font-size: 1.9rem;
+            margin-bottom: 1rem;
+            color: var(--azul-neon);
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--gris-suave);
+            line-height: 1.7;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(90deg, var(--azul-neon), var(--azul-brillo));
+            color: #000;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0.4rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .boton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.7);
+        }
+
+        .boton-volver {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 2px solid var(--azul-neon);
+            color: var(--azul-neon);
+            box-shadow: none;
+            margin-bottom: 2rem;
+        }
+
+        .boton-volver:hover {
+            background: rgba(0, 204, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.25);
+        }
+
+        .proyectos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tarjeta {
+            background: var(--azul-tarjeta);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 14px;
+            padding: 1.8rem;
+            transition: all 0.35s ease;
+        }
+
+        .tarjeta:hover {
+            border-color: var(--azul-neon);
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .tarjeta h3 {
+            color: var(--azul-neon);
+            margin-bottom: 0.8rem;
+            font-size: 1.25rem;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .etiqueta.principal {
+            background: rgba(255, 221, 0, 0.15);
+            color: var(--amarillo);
+            border: 1px solid rgba(255, 221, 0, 0.3);
+        }
+
+        .etiqueta.privacidad {
+            background: rgba(0, 255, 136, 0.15);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .tarjeta p {
+            color: var(--gris-suave);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        .estado { font-size: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed rgba(0, 204, 255, 0.15); }
+        .estado.disponible { color: #00ff88; }
+
+        /* === ESTILO POLÍTICA DE PRIVACIDAD === */
+        .privacidad-contenido {
+            background: var(--azul-tarjeta);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 14px;
+            padding: 2rem;
+            line-height: 1.8;
+            color: #d4e4f7;
+        }
+
+        .privacidad-contenido h3 {
+            color: var(--azul-neon);
+            margin: 1.8rem 0 0.8rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(0, 204, 255, 0.15);
+            padding-bottom: 0.5rem;
+        }
+
+        .privacidad-contenido h3:first-child { margin-top: 0; }
+        .privacidad-contenido p { margin-bottom: 1rem; }
+        .privacidad-contenido ul { margin: 1rem 0 1rem 1.8rem; }
+        .privacidad-contenido li { margin-bottom: 0.6rem; color: #b8d4f0; }
+        .privacidad-contenido strong { color: #fff; }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-top: 1px solid rgba(0, 204, 255, 0.15);
+            margin-top: 3rem;
+            color: #6b9dc7;
+            font-size: 0.9rem;
+        }
+
+        footer a { color: var(--azul-neon); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .logo { font-size: 1.6rem; }
+            .hero h1 { font-size: 1.5rem; }
+            .privacidad-contenido { padding: 1.5rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">⚡ <span>Lencina</span>Tech</div>
+    <p class="subtitulo">ThunderPro · Aplicaciones · Desarrollo Web</p>
+</header>
+
+<nav>
+    <a href="#inicio" class="nav-link activo" data-pantalla="inicio">Inicio</a>
+    <a href="#proyectos" class="nav-link" data-pantalla="proyectos">Proyectos</a>
+    <a href="#apps" class="nav-link" data-pantalla="apps">Aplicaciones</a>
+    <a href="#servicios" class="nav-link" data-pantalla="servicios">Servicios</a>
+    <a href="#privacidad" class="nav-link" data-pantalla="privacidad">Privacidad</a>
+    <a href="#contacto" class="nav-link" data-pantalla="contacto">Contacto</a>
+</nav>
+
+<main>
+    <!-- PANTALLA INICIO -->
+    <section id="inicio" class="pantalla activa">
+        <div class="hero">
+            <h1>Potencia y Tecnología ⚡</h1>
+            <p>Desarrollo de aplicaciones, infraestructura y soluciones digitales. Creando herramientas como <strong>ThunderPro</strong> y mucho más. Todo hecho con dedicación, código propio y energía.</p>
+            <button class="boton nav-link" data-pantalla="proyectos">Ver Proyectos</button>
+            <button class="boton boton-volver nav-link" data-pantalla="contacto">Trabajemos Juntos</button>
+        </div>
+    </section>
+
+    <!-- PANTALLA PROYECTOS -->
+    <section id="proyectos" class="pantalla">
+        <h2>⚡ Proyectos Destacados</h2>
+        <div class="proyectos">
+            <div class="tarjeta" style="border-color:var(--amarillo); box-shadow:0 0 20px rgba(255,221,0,0.15);">
+                <span class="etiqueta principal">★ ESTRELLA</span>
+                <h3>⚡ ThunderPro</h3>
+                <p>Aplicación de conexión y túnel diseñada para rendimiento, estabilidad y seguridad. Desarrollada con identidad propia, bajo constante mejora y adaptada a necesidades reales.</p>
+                <p><strong>Características:</strong> Conexión SSH, modos directo y proxy, interfaz en español, monitoreo en tiempo real.</p>
+                <div class="estado disponible">● Disponible y activo</div>
+            </div>
+            <div class="tarjeta">
+                <span class="etiqueta">🔧 EN DESARROLLO</span>
+                <h3>📱 App de Gestión</h3>
+                <p>Aplicación para administración y control de servicios. Panel integrado, estadísticas y gestión desde el celular.</p>
+                <div class="estado" style="color:var(--amarillo);">⏳ En construcción</div>
+            </div>
+            <div class="tarjeta">
+                <span class="etiqueta">🔧 EN DESARROLLO</span>
+                <h3>🛒 Tienda & Integración</h3>
+                <p>Plataforma con enlace a Mercado Libre y sistema de pedidos. Sitio profesional conectado directamente a tu catálogo.</p>
+                <div class="estado" style="color:var(--amarillo);">⏳ En planificación</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANTALLA APLICACIONES -->
+    <section id="apps" class="pantalla">
+        <h2>📱 Aplicaciones & Herramientas</h2>
+        <div class="proyectos">
+            <div class="tarjeta">
+                <h3>🔐 Túneles & VPN</h3>
+                <p>Configuración y personalización de conexiones seguras. Veltrix, SSH, túneles estables y adaptados a cada red.</p>
+            </div>
+            <div class="tarjeta">
+                <h3>🗄️ Bases de Datos</h3>
+                <p>Diseño, optimización y mantenimiento. SQL Server, MySQL, estructuras escalables y seguras.</p>
+            </div>
+            <div class="tarjeta">
+                <h3>🎨 Diseño & Marca</h3>
+                <p>Identidad visual, logos, interfaz de aplicaciones. Como el estilo de ThunderPro: profesional, moderno y con personalidad.</p>
+            </div>
+            <div class="tarjeta">
+                <h3>🌐 Sitios Web</h3>
+                <p>Desde página de presentación hasta sistemas completos. Adaptables a celular, rápidos y seguros.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANTALLA SERVICIOS -->
+    <section id="servicios" class="pantalla">
+        <h2>🛠️ Lo que Ofrezco</h2>
+        <div class="proyectos">
+            <div class="tarjeta">
+                <h3>💻 Desarrollo a Medida</h3>
+                <p>Soluciones pensadas para tu necesidad. No plantillas genéricas: código propio, adaptado y mantenible.</p>
+            </div>
+            <div class="tarjeta">
+                <h3>🔧 Soporte Técnico</h3>
+                <p>Configuración de VPS, servidores, dominios y hosting. De nic.ar a Host Group, todo conectado y funcionando.</p>
+            </div>
+            <div class="tarjeta">
+                <h3>📈 Proyectos Escalables</h3>
+                <p>Desde la primera versión hasta crecer. Código limpio, seguro y listo para agregar funciones cuando sea necesario.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANTALLA POLÍTICA DE PRIVACIDAD — PÚBLICA, SIN LOGIN -->
+    <section id="privacidad" class="pantalla">
+        <button class="boton boton-volver nav-link" data-pantalla="inicio">← Volver al Inicio</button>
+        
+        <h2>📄 Política de Privacidad</h2>
+        <div class="privacidad-contenido">
+            <p><strong>Última actualización:</strong> 7 de octubre de 2026</p>
+            
+            <h3>1. Información General</h3>
+            <p>Esta Política de Privacidad describe cómo se maneja la información en la aplicación <strong>ThunderPro</strong> y en el sitio web <strong>LencinaTech.com.ar</strong>, desarrollados y operados por LencinaTech.</p>
+            <p>Nos comprometemos a proteger la privacidad de los usuarios. La aplicación funciona bajo principios de transparencia y mínima recolección de datos.</p>
+            
+            <h3>2. Información que Recopilamos</h3>
+            <p>La aplicación <strong>ThunderPro</strong> recopila la siguiente información únicamente con el fin de brindar el servicio:</p>
+            <ul>
+                <li><strong>Identificador de usuario:</strong> Para verificar la validez del servicio y gestionar el acceso.</li>
+                <li><strong>Dirección IP y datos de conexión:</strong> Necesarios para establecer el túnel y monitorear la estabilidad de la conexión.</li>
+                <li><strong>Estado de la conexión:</strong> Información sobre si la aplicación está conectada o desconectada, visible en la interfaz.</li>
+                <li><strong>No se recopilan datos personales sensibles:</strong> No accedemos a contactos, ubicación, cámara, archivos ni mensajes del dispositivo sin autorización explícita.</li>
+            </ul>
+            
+            <h3>3. Uso de la Información</h3>
+            <p>La información recopilada se utiliza exclusivamente para:</p>
+            <ul>
+                <li>Establecer y mantener la conexión del servicio VPN/túnel.</li>
+                <li>Verificar la vigencia del acceso del usuario.</li>
+                <li>Detectar y solucionar problemas técnicos.</li>
+                <li>Mejorar el rendimiento y la estabilidad de la aplicación.</li>
+            </ul>
+            <p><strong>No vendemos, compartimos ni cedemos datos personales</strong> a terceros con fines comerciales.</p>
+            
+            <h3>4. Servicios de Terceros</h3>
+            <p>La aplicación puede utilizar servicios de terceros que tienen su propia política de privacidad:</p>
+            <ul>
+                <li><strong>Google Play Services:</strong> Para distribución y verificación de la aplicación. Consultá su política en <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:var(--azul-neon);">policies.google.com/privacy</a></li>
+                <li><strong>Proveedores de servidores:</strong> La conexión se establece con servidores gestionados por el desarrollador o asociados, bajo acuerdos de confidencialidad.</li>
+            </ul>
+            
+            <h3>5. Seguridad</h3>
+            <p>Implementamos medidas técnicas para proteger la información:</p>
+            <ul>
+                <li>Las conexiones utilizan protocolos cifrados (TLS/SSH).</li>
+                <li>No almacenamos contraseñas en texto plano.</li>
+                <li>El acceso a los datos de gestión está restringido al desarrollador.</li>
+            </ul>
+            
+            <h3>6. Retención de Datos</h3>
+            <p>Los datos de conexión se conservan el tiempo necesario para cumplir con los fines descritos y luego se eliminan o anonimizan según corresponda.</p>
+            
+            <h3>7. Derechos de los Usuarios</h3>
+            <p>Podés solicitar:</p>
+            <ul>
+                <li>Acceder a tus datos personales que tengamos registrados.</li>
+                <li>Rectificar información incorrecta.</li>
+                <li>Solicitar la eliminación de tus datos cuando corresponda.</li>
+            </ul>
+            <p>Para ejercer estos derechos, escribí al correo de contacto indicado abajo.</p>
+            
+            <h3>8. Menores de Edad</h3>
+            <p>La aplicación no está dirigida a menores de 13 años. No recopilamos deliberadamente información de menores.</p>
+            
+            <h3>9. Cambios en esta Política</h3>
+            <p>Podemos actualizar esta política. Los cambios se publican en esta página con la fecha de revisión actualizada. Te recomendás consultarla periódicamente.</p>
+            
+            <h3>10. Contacto</h3>
+            <p>Ante cualquier duda sobre esta Política de Privacidad, podés escribir a:</p>
+            <p style="font-size:1.1rem; color:var(--azul-neon); font-weight:600;">📧 contacto@rocaleso131@gmail.com,zanderwolf22@gmail.comr</p>
+        </div>
+    </section>
+
+    <!-- PANTALLA CONTACTO -->
+    <section id="contacto" class="pantalla">
+        <div class="hero">
+            <h2>📬 Hablemos de tu Proyecto</h2>
+            <p>¿Tenés una idea, una aplicación o un sitio en mente? Contame y lo construimos juntos, paso a paso.</p>
+            <p style="color:var(--azul-neon); font-size:1.1rem; font-weight:600; margin-top:1rem;">📧 contacto@zanderwolf22@gmail.com,rocaleso131@gmail.com</p>
+            <button class="boton boton-volver nav-link" data-pantalla="inicio" style="margin-top:2rem;">← Volver al Inicio</button>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 LencinaTech — Todos los derechos reservados</p>
+    <p style="margin-top:0.5rem;">
+        <a href="#privacidad" class="nav-link" data-pantalla="privacidad">Política de Privacidad</a> · 
+        <a href="#contacto" class="nav-link" data-pantalla="contacto">Contacto</a>
+    </p>
+</footer>
+
+<script>
+    // Navegación entre pantallas — SIN recargar, SIN login, PÚBLICA
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pantallas = document.querySelectorAll('.pantalla');
+
+    navLinks.forEach(enlace => {
+        enlace.addEventListener('click', (e) => {
+            e.preventDefault();
+            const destino = enlace.getAttribute('data-pantalla');
+            
+            // Ocultar todo
+            pantallas.forEach(p => p.classList.remove('activa'));
+            navLinks.forEach(n => n.classList.remove('activo'));
+            
+            // Mostrar destino
+            document.getElementById(destino).classList.add('activa');
+            document.querySelectorAll(`[data-pantalla="${destino}"]`).forEach(n => n.classList.add('activo'));
+            
+            // Subir al inicio de la página
+            window.scrollTo(0, 0);
+        });
+    });
+</script>
+
+</body>
+</html>
